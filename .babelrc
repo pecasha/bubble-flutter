@@ -1,0 +1,25 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "useBuiltIns": "entry",
+                "targets": {
+                    "browsers": [
+                        "Chrome >= 20",
+                        "iOS >= 9",
+                        "Android >= 4",
+                        "ie >= 9"
+                    ]
+                }
+            }
+        ],
+        "stage-0"
+    ],
+    "plugins": [
+        "transform-runtime",
+        "syntax-dynamic-import",
+        "jsx-v-model",
+        "transform-vue-jsx"
+    ]
+}
