@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="fragment" content="!">
+    <meta name="keywords" content="bubble,flutter">
+    <meta name="description" content="bubble flutter animation.">
+    <meta name="author" content="ChiHai-Chuck <chuck@chihai.me>">
+    <title>Bubble-Flutter Demo</title>
+    <script src="../lib/bubble-flutter.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            display: block;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        new BubbleFlutter(window, document.querySelector("canvas"), {
+            alphaMin: .3,
+            alphaMax: .6,
+            scaleMax: .6,
+            swingMin: -20,
+            swingMax: 20,
+            speedMin: .3,
+            speedMax: 1.6,
+            startRandom: true,
+            colorRandom: true
+        }).animate();
+    </script>
+</body>
+</html>
