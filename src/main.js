@@ -43,7 +43,7 @@ export default function ($box = window, $canvas, options) {
         return (window.devicePixelRatio || 1) / backingStorePixelRatio;
     }());
 
-    const _options = Object.assign({}, {
+    const _options = Object.assign({
         alphaMin: .1,
         alphaMax: .3,
         scaleMin: 10,
@@ -62,10 +62,12 @@ export default function ($box = window, $canvas, options) {
             startX: 0,
             axisLength: 0, //轴长
             waveWidth: .008, // 波浪宽度，数越小越宽
-            waveHeight: 6, // 波浪高度,数越大越高
+            waveHeight: 18, // 波浪高度,数越大越高
             speed: .09, // 波浪速度，数越大速度越快
             xOffset: 0, // 波浪x偏移量
-            nowRange: 40 // 当前所占百分比
+            nowRange: 40, // 当前所占百分比
+            foreColor: "rgba(28,134,209,.5)",
+            backColor: "#1c86d1"
         }
     }, options);
 
@@ -90,7 +92,7 @@ export default function ($box = window, $canvas, options) {
 
     const randomInRange = (min, max) => Math.random() * (max - min) + min;
 
-    const Wave = function Wave(xOffset, color, waveHeight) {
+    const Wave = function Wave(xOffset, color) {
         ctx.save();
 
         const points = []; // 用于存放绘制Sin曲线的点
@@ -103,8 +105,8 @@ export default function ($box = window, $canvas, options) {
 
             const dY = height * (1 - _options.wave.nowRange / 100);
 
-            points.push([x, dY + y * waveHeight]);
-            ctx.lineTo(x, dY + y * waveHeight);
+            points.push([x, dY + y * _options.wave.waveHeight]);
+            ctx.lineTo(x, dY + y * _options.wave.waveHeight);
         }
 
         // 封闭路径
@@ -196,8 +198,8 @@ export default function ($box = window, $canvas, options) {
 
             //if(_options.wave.nowRange <= 40) _options.wave.nowRange += 1;
             //if(_options.wave.nowRange > 40) _options.wave.nowRange -= 1;
-            Wave(_options.wave.xOffset+Math.PI*.7, "rgba(28, 134, 209, 0.5)", 18);
-            Wave(_options.wave.xOffset, "#1c86d1", 18);
+            Wave(_options.wave.xOffset+Math.PI*.7, _options.wave.foreColor);
+            Wave(_options.wave.xOffset, _options.wave.backColor);
             _options.wave.xOffset += _options.wave.speed;
 
             for(let i of circles) i.render();
@@ -206,7 +208,7 @@ export default function ($box = window, $canvas, options) {
 
     const area = _options.direction === "left" || _options.direction === "right" ? wrap.height : wrap.width;
     for(let i = 0; i < area * _options.count; i++) {
-        const color = _options.colorRandom ? "#"+("000000"+parseInt(Math.random()*0x10000000).toString(16)).slice(-6) : _options.color;
+        const color = _options.colorRandom ? "#"+("000000"+(~~(Math.random()*0x10000000)).toString(16)).slice(-6) : _options.color;
         circles.push(new Bubble(color));
     }
 
