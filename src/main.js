@@ -57,7 +57,16 @@ export default function ($box = window, $canvas, options) {
         color: "#fff",
         direction: "left",
         startRandom: false,
-        colorRandom: false
+        colorRandom: false,
+        wave: {
+            startX: 0,
+            axisLength: 0, //轴长
+            waveWidth: .008, // 波浪宽度，数越小越宽
+            waveHeight: 6, // 波浪高度,数越大越高
+            speed: .09, // 波浪速度，数越大速度越快
+            xOffset: 0, // 波浪x偏移量
+            nowRange: 40 // 当前所占百分比
+        }
     }, options);
 
     const wrap = {
@@ -67,15 +76,46 @@ export default function ($box = window, $canvas, options) {
 
     const directionType = ["left", "bottom", "right", "top"].indexOf(_options.direction);
 
-    let width = $canvas.width = wrap.width * pixelRatio,
-        height = $canvas.height = wrap.height * pixelRatio,
-        animationId = 0,
-        circles = [];
+    let width = $canvas.width = wrap.width;
+    let height = $canvas.height = wrap.height;
+    // let width = $canvas.width = wrap.width * pixelRatio;
+    // let height = $canvas.height = wrap.height * pixelRatio;
+    let animationId = 0;
+    const circles = [];
+
+    _options.wave.axisLength = width;
 
     const ctx = $canvas.getContext("2d");
     // ctx.globalCompositeOperation = "lighter";
 
     const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+    const Wave = function Wave(xOffset, color, waveHeight) {
+        ctx.save();
+
+        const points = []; // 用于存放绘制Sin曲线的点
+
+        ctx.beginPath();
+        //在整个轴长上取点
+        for (let x = _options.wave.startX; x < _options.wave.startX + _options.wave.axisLength; x += 20 / _options.wave.axisLength) {
+            //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
+            const y = Math.sin((-_options.wave.startX - x) * _options.wave.waveWidth + xOffset) * .8 + .1;
+
+            const dY = height * (1 - _options.wave.nowRange / 100);
+
+            points.push([x, dY + y * waveHeight]);
+            ctx.lineTo(x, dY + y * waveHeight);
+        }
+
+        // 封闭路径
+        ctx.lineTo(_options.wave.axisLength, height);
+        ctx.lineTo(_options.wave.startX, height);
+        ctx.lineTo(points[0][0], points[0][1]);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        ctx.restore();
+    };
 
     const Bubble = function Bubble(color) {
         const randomReset = (type, startRandom) => {
@@ -153,6 +193,13 @@ export default function ($box = window, $canvas, options) {
         };
         this.render = () => {
             ctx.clearRect(0, 0, width, height);
+
+            //if(_options.wave.nowRange <= 40) _options.wave.nowRange += 1;
+            //if(_options.wave.nowRange > 40) _options.wave.nowRange -= 1;
+            Wave(_options.wave.xOffset+Math.PI*.7, "rgba(28, 134, 209, 0.5)", 18);
+            Wave(_options.wave.xOffset, "#1c86d1", 18);
+            _options.wave.xOffset += _options.wave.speed;
+
             for(let i of circles) i.render();
         };
     };
