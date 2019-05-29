@@ -17,16 +17,18 @@
     <style>
         html,
         body {
+            position: relative;
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
+            background: #000;
         }
         canvas {
             display: block;
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background-color: #fff;
         }
     </style>
 </head>
@@ -34,18 +36,18 @@
 <body>
     <canvas></canvas>
     <script>
-        new BubbleFlutter(window, document.querySelector("canvas"), {
-            direction: "bottom",
-            alphaMin: .3,
-            alphaMax: .6,
-            scaleMax: .6,
-            swingMin: -20,
-            swingMax: 20,
-            speedMin: .3,
-            speedMax: 1.6,
-            startRandom: true,
-            colorRandom: true
-        }).animate();
+        var bubbleFlutter = new BubbleFlutter(window, document.querySelector("canvas"), {
+            bubbleDirection: "bottom",
+            bubbleAlphaMin: .3,
+            bubbleAlphaMax: .6,
+            bubbleScaleMax: .6,
+            bubbleSwingMin: -20,
+            bubbleSwingMax: 20,
+            bubbleSpeedMin: .3,
+            bubbleSpeedMax: 1.6,
+            bubbleStartRandom: true
+        });
+        bubbleFlutter.animate();
     </script>
 </body>
 </html>
